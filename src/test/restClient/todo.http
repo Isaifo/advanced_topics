@@ -1,0 +1,13 @@
+@URL_BASE = http://localhost:8080/todo
+
+### Criar uma tarefa
+POST {{URL_BASE}}
+Content-Type: application/json
+
+{
+    "title": "Tarefa TAC",
+    "description": "Fazer a tarefa",
+    "person": {
+        "id": 1
+    }
+}
