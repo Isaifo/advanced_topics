@@ -1,7 +1,7 @@
 @URL_BASE = http://localhost:8090/person
 
 ### Obter uma pessoa pelo ID
-GET {{URL_BASE}}/1
+GET {{URL_BASE}}/ID
 
 ### Obter todas as pessoas
 GET {{URL_BASE}}

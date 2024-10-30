@@ -2,7 +2,12 @@ package com.aula_23_10.demo.controller;
 
 import java.util.List;
 
+import org.hibernate.query.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,10 +47,16 @@ public class PersonController {
        : ResponseEntity.notFound().build();
     }
 
-    @GetMapping
-    public List<Person> getAll() {
 
-        return personRepository.findAll();
+    // pageable search
+    @GetMapping
+    public ResponseEntity<Page<Person>> getAll(
+        
+    @PageableDefault(page = 0, size = 10, sort = "name", direction = Sort.Direction.ASC) //page default in no return
+    Pageable pageable) {
+
+        return ResponseEntity.status(206)
+        .body(personRepository.findAll(pageable)); // body response 
        
     }
 
