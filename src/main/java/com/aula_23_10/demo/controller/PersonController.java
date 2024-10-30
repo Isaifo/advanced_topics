@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aula_23_10.demo.model.Person;
 import com.aula_23_10.demo.repository.PersonRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/person")
@@ -60,9 +63,31 @@ public class PersonController {
        
     }
 
-    @PutMapping
-    public String put() {
-        return "Pessoa Atualizada";
+    @PutMapping("{id}")
+    public ResponseEntity put(@PathVariable long id,
+        @Valid @RequestBody PersonDTO dto)
+    
+    {
+        // find person in db
+        var personOpt = personRepository.findById(id);
+
+        if(personOpt.isPresent()){
+            BeanUtils.copyProperties(dto, person);
+          
+            try {
+                
+                personRepository.save(person);
+                return ResponseEntity.ok().body(person);
+
+            } catch (Exception ex) {
+                return ResponseEntity.badRequest()
+                .body("Falha ao salvar: " + ex.getMessage());
+            }
+        } else{
+            return ResponseEntity.notFound().build();
+        }
+         
+      
     }
 
     @DeleteMapping("{id}")
@@ -84,5 +109,11 @@ public class PersonController {
         }
       }
         
-    }
+    
 }
+
+    private static class PersonDTO {
+
+        public PersonDTO() {
+        }
+    }
