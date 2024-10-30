@@ -65,8 +65,24 @@ public class PersonController {
         return "Pessoa Atualizada";
     }
 
-    @DeleteMapping
-    public String delete() {
-        return "Pessoa Deletada";
+    @DeleteMapping("{id}")
+    public ResponseEntity<Object> delete(@PathVariable long id) {
+
+      var personOpt = personRepository.findById(id)
+      
+      
+      
+        if (personOpt.isPresent()) {
+        
+        try{
+            personRepository.delete(personOpt.get());
+            return ResponseEntity.ok().build();
+        }catch(Exception ex){
+            return ResponseEntity
+            .badRequest()
+        .body("Falha ao deletar" + ex.getMessage());
+        }
+      }
+        
     }
 }

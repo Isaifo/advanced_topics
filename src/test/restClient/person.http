@@ -4,7 +4,7 @@
 GET {{URL_BASE}}/ID
 
 ### Obter todas as pessoas
-GET {{URL_BASE}}
+GET {{URL_BASE}} ?page=0&size=20&sort=name
 
 ### Criar uma pessoa
 POST {{URL_BASE}}
