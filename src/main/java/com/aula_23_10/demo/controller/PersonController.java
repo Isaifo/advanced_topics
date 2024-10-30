@@ -1,6 +1,9 @@
 package com.aula_23_10.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,14 +29,24 @@ public class PersonController {
         return person;
     }
 
+    // get person from id
+
     @GetMapping("{id}")
-    public String get(@PathVariable int id) {
-        return "Obtendo uma pessoa: "+id;
+    public ResponseEntity<Object> get(@PathVariable long id) {
+
+        // find person in db, return type optional
+        var personOpt =  personRepository.findById(id);
+
+       return personOpt.isPresent()
+       ? ResponseEntity.ok(personOpt.get())
+       : ResponseEntity.notFound().build();
     }
 
     @GetMapping
-    public String getAll() {
-        return "Obtendo todas as pessoas";
+    public List<Person> getAll() {
+
+        return personRepository.findAll();
+       
     }
 
     @PutMapping

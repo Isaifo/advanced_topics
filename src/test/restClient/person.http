@@ -1,4 +1,4 @@
-@URL_BASE = http://localhost:8080/person
+@URL_BASE = http://localhost:8090/person
 
 ### Obter uma pessoa pelo ID
 GET {{URL_BASE}}/1
